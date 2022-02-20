@@ -16,6 +16,8 @@
   "dependencies": {},
   "scripts": {
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "storybook-docs": "start-storybook --docs --no-manager-cache",
+    "build-storybook-docs": "build-storybook --docs"
   }
 }

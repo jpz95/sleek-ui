@@ -1,0 +1,14 @@
+// 1. Settings - global variables, mixins, configuration, etc.
+
+// 2. Tools - mixins and functions for the project
+
+// 3. Vendors - 3rd-party styles; define at the top so its easily overriden
+@use "vendors";
+
+// 4. Base - normalizes styles (typography, font, links, etc.)
+
+// 5. Objects - common design patterns seen in UIs (media object, cards, etc.)
+
+// 6. Components - styles for project's components (if not already bundled with component)
+
+// 7. Utilities - helpers for providing a consistent design and behavior (hiding elements, spacing, etc.)

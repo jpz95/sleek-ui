@@ -6,5 +6,9 @@
     "watchFile": "dynamicPriorityPolling"
   },
   "javascript.suggest.includeAutomaticOptionalChainCompletions": false,
-  "debug.saveBeforeStart": "none"
+  "debug.saveBeforeStart": "none",
+  "editor.codeActionsOnSave": ["source.fixAll.format", "source.fixAll.eslint"],
+  "editor.formatOnSave": true,
+  "eslint.validate": ["javascript"],
+  "editor.defaultFormatter": "esbenp.prettier-vscode"
 }

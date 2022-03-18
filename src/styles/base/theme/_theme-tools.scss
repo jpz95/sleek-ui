@@ -1,0 +1,133 @@
+@use "sass:map";
+@use "sass:math";
+
+// TODO make more robust - maybe a scheme config map?
+// scheme-config: ( primary: ( light: ( main: @function? ) ) )
+@function get-hsl-color-scheme($prefix, $hue, $saturation, $lightness) {
+  $light-scheme-map: (
+    main: hsl($hue, $saturation, $lightness),
+    text-1: hsl($hue, $saturation, 10%),
+    text-2: hsl($hue, 30%, 30%),
+    surface-1: hsl($hue 20% 99%),
+    surface-2: hsl($hue 20% 92%),
+    surface-3: hsl($hue 25% 90%),
+    surface-4: hsl($hue 20% 85%),
+    surface-shadow: $hue 10% 20%,
+    shadow-strength: 0.02,
+  );
+
+  $dark-scheme-map: (
+    main: hsl($hue, math.div($saturation, 2), math.div($lightness, 1.5)),
+    text-1: hsl($hue 15% 85%),
+    text-2: hsl($hue 5% 65%),
+    surface-1: hsl($hue 10% 10%),
+    surface-2: hsl($hue 10% 15%),
+    surface-3: hsl($hue 5% 20%),
+    surface-4: hsl($hue 5% 25%),
+    surface-shadow: $hue 50% 3%,
+    shadow-strength: 0.8,
+  );
+
+  @return (light: $light-scheme-map, dark: $dark-scheme-map);
+}
+
+@mixin make-variable-if-defined($var-name, $value) {
+  @if $value != null {
+    --#{$var-name}: #{$value};
+  }
+}
+
+// light = #00aaff = blue jeans
+// dark = #2b6380 = blue sapphire
+$_primary-hue: 200;
+$_primary-saturation: 100%;
+$_primary-lightness: 50%;
+
+// light = #ffd500 = cyber yellow
+// dark = #b69d1e = lemon curry
+$_secondary-hue: 50;
+$_secondary-saturation: 100%;
+$_secondary-lightness: 50%;
+
+// Get colors by using `map-get($scheme, 'primary', 'light')`
+$scheme: (
+  primary:
+    get-hsl-color-scheme(
+      "primary",
+      $_primary-hue,
+      $_primary-saturation,
+      $_primary-lightness
+    ),
+  secondary: (
+    light: (
+      main: hsl($_secondary-hue, $_secondary-saturation, $_secondary-lightness),
+    ),
+    dark: (
+      main:
+        hsl(
+          $_secondary-hue,
+          math.div($_secondary-saturation, 1.4),
+          math.div($_secondary-lightness, 1.2)
+        ),
+    ),
+  ),
+);
+
+@mixin color-variables($color-type, $theme) {
+  $color-scheme: map-get($scheme, $color-type, $theme);
+
+  // base color
+  $main: map-get($color-scheme, "main");
+  $main-var-name: "color-#{$color-type}";
+  @include make-variable-if-defined($main-var-name, $main);
+
+  // text colors
+  $text-1: map-get($color-scheme, "text-1");
+  $text-1-var-name: "color-#{$color-type}-text-1";
+  @include make-variable-if-defined($text-1-var-name, $text-1);
+
+  $text-2: map-get($color-scheme, "text-2");
+  $text-2-var-name: "color-#{$color-type}-text-2";
+  @include make-variable-if-defined($text-2-var-name, $text-2);
+
+  // surface colors
+  $surface-1: map-get($color-scheme, "surface-1");
+  $surface-1-var-name: "color-#{$color-type}-surface-1";
+  @include make-variable-if-defined($surface-1-var-name, $surface-1);
+
+  $surface-2: map-get($color-scheme, "surface-2");
+  $surface-2-var-name: "color-#{$color-type}-surface-2";
+  @include make-variable-if-defined($surface-2-var-name, $surface-2);
+
+  $surface-3: map-get($color-scheme, "surface-3");
+  $surface-3-var-name: "color-#{$color-type}-surface-3";
+  @include make-variable-if-defined($surface-3-var-name, $surface-3);
+
+  $surface-4: map-get($color-scheme, "surface-4");
+  $surface-4-var-name: "color-#{$color-type}-surface-4";
+  @include make-variable-if-defined($surface-4-var-name, $surface-4);
+
+  // shadow colors
+  $surface-shadow: map-get($color-scheme, "surface-shadow");
+  $surface-shadow-var-name: "color-#{$color-type}-surface-shadow";
+  @include make-variable-if-defined($surface-shadow-var-name, $surface-shadow);
+
+  $shadow-strength: map-get($color-scheme, "shadow-strength");
+  $shadow-strength-var-name: "color-#{$color-type}-shadow-strength";
+  @include make-variable-if-defined($shadow-strength-var-name, $shadow-strength);
+}
+
+:root {
+  @each $scheme-name, $values in $scheme {
+    @include color-variables($scheme-name, "light");
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    @each $scheme-name, $values in $scheme {
+      @include color-variables($scheme-name, "light");
+    }
+  }
+}

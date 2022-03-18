@@ -6,9 +6,11 @@ $themes: (
     hue: 100,
     saturation: 100,
     lightness: 50,
+    // scheme: ( user scheme to generate dark/light colors )
   ),
   secondary: (
     hue: 200,
+    // uses defaults if user does not define
   ),
 ) !default;
 
@@ -16,7 +18,12 @@ $_theme-config-defaults: (
   hue: 100,
   saturation: 100,
   lightness: 50,
-  // scheme:
+  /* default light/dark scheme generation
+    scheme: (
+      light: ( main: @function, ... )
+      dark: ( main: @function, ... )
+    )
+  */
 );
 
 @function normalize-themes($themes-from-user) {
@@ -57,6 +64,7 @@ $_theme-config-defaults: (
   $saturation: get-value-or-default("saturation", map-get($theme-config, "saturation"));
   $lightness: get-value-or-default("lightness", map-get($theme-config, "lightness"));
 
+  // used for testing
   :root {
     --hue: #{map-get($theme-config, "hue")};
     --saturation: #{$saturation};

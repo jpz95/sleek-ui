@@ -1,0 +1,65 @@
+@use "sass:map";
+@use "sass:math";
+
+$themes: (
+  primary: (
+    hue: 100,
+    saturation: 100,
+    lightness: 50,
+  ),
+  secondary: (
+    hue: 200,
+  ),
+) !default;
+
+$_theme-config-defaults: (
+  hue: 100,
+  saturation: 100,
+  lightness: 50,
+  // scheme:
+);
+
+@function normalize-themes($themes-from-user) {
+  $themes: ();
+
+  // maybe loop through values and get defaults
+
+  @each $theme-name, $theme-config in $themes-from-user {
+    @if map-has-key($theme-config, "hue") == false {
+      @error "Missing hue value for theme: #{theme-name}";
+    }
+    // map-set($themes, $theme-name);
+
+    @if map-has-key($theme-config, "saturation") == false {
+      // map-set($theme-config, map-get($_theme-config-defaults, "saturation"));
+    }
+
+    @if map-has-key($theme-config, "lightness") == false {
+      // map-set($theme-config, map-get($_theme-config-defaults, "lightness"));
+    }
+  }
+}
+
+@function get-value-or-default($key, $value) {
+  @if $value == null {
+    $default-for-key: map-get($_theme-config-defaults, $key);
+    @return $default-for-key;
+  }
+
+  @return $value;
+}
+
+@each $theme-name, $theme-config in $themes {
+  @if map-has-key($theme-config, "hue") == false {
+    @error "Missing hue value for theme: #{theme-name}";
+  }
+
+  $saturation: get-value-or-default("saturation", map-get($theme-config, "saturation"));
+  $lightness: get-value-or-default("lightness", map-get($theme-config, "lightness"));
+
+  :root {
+    --hue: #{map-get($theme-config, "hue")};
+    --saturation: #{$saturation};
+    --lightness: #{$lightness};
+  }
+}

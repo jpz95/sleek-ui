@@ -50,6 +50,7 @@ $_secondary-saturation: 100%;
 $_secondary-lightness: 50%;
 
 // Get colors by using `map-get($scheme, 'primary', 'light')`
+// TODO move to 'settings'
 $scheme: (
   primary:
     get-hsl-color-scheme(

@@ -26,6 +26,7 @@ $_theme-config-defaults: (
   */
 );
 
+// TODO don't think this is helpful, but idk why it complains about using map-set
 @function normalize-themes($themes-from-user) {
   $themes: ();
 
@@ -71,3 +72,12 @@ $_theme-config-defaults: (
     --lightness: #{$lightness};
   }
 }
+
+/*
+  maybe one improvement:
+  instead of iterating through each theme, have a function that separates them between light and dark (and more?)
+
+  then we can do
+  :root {} for light colors
+  @media (prefers-color-scheme: dark) { :root {} } for dark colors
+*/

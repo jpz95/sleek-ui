@@ -1,4 +1,4 @@
-// 1. Settings - global variables, mixins, configuration, etc.
+// 1. Settings - global variables, configuration, etc.
 
 // 2. Tools - mixins and functions for the project
 
@@ -6,6 +6,7 @@
 @use "vendors";
 
 // 4. Base - normalizes styles (typography, font, links, etc.)
+@use "base";
 
 // 5. Objects - common design patterns seen in UIs (media object, cards, etc.)
 
